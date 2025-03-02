@@ -1,0 +1,59 @@
+A RESTful web application for for managing task lists and tasks.
+ Java 21
+ Jersey 3.1.5
+ Grizzly
+ PostgreSQL
+ Maven
+
+
+Instructions to set up and run the application using Docker Compose.
+Docker
+Docker Compose
+
+Build and Start the Application
+docker-compose up -d --build
+
+Verify Startup
+docker-compose ps
+
+Stop the Application
+docker-compose down
+
+Endpoints:-
+
+List all task lists and tasks
+/lists
+GET
+curl http://localhost:8081/api/taskboard/lists
+
+Create a new task list
+/lists?name={name}
+POST
+curl -X POST "http://localhost:8081/api/taskboard/lists?name=NewList"
+
+Add a task to a list
+/lists/{listId}/tasks
+POST
+curl -X POST -H "Content-Type: application/json" -d '{"name":"Task","description":"Desc"}' http://localhost:8081/api/taskboard/lists/1/tasks
+
+Update a task
+/tasks/{taskId}
+PUT
+curl -X PUT -H "Content-Type: application/json" -d '{"name":"Updated","description":"NewDesc"}' http://localhost:8081/api/taskboard/tasks/1
+
+Delete a task
+/tasks/{taskId}
+DELETE
+curl -X DELETE http://localhost:8081/api/taskboard/tasks/1
+
+Delete a list and its tasks
+/tasks/{taskId}
+DELETE
+curl -X DELETE http://localhost:8081/api/taskboard/lists/1
+
+Move a task to another list
+/tasks/{taskId}/move?newListId={newListId}
+PUT
+curl -X PUT http://localhost:8081/api/taskboard/tasks/1/move?newListId=2
+
+

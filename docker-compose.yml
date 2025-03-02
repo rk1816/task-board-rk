@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_HOST=db
+    depends_on:
+      - db
+    networks:
+      - taskboard-network
+
+  db:
+    image: postgres:15.4-alpine
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./task_board.sql:/docker-entrypoint-initdb.d/task_board.sql
+    networks:
+      - taskboard-network
+
+networks:
+  taskboard-network:
+    driver: bridge
+
+volumes:
+  db-data:
